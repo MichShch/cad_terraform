@@ -1,0 +1,55 @@
+# Terraform local working directories
+**/.terraform/
+.terraform/
+
+# Terraform state
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+*.backup
+.terraform.tfstate.lock.info
+
+# Terraform variables / secrets
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+!*.tfvars.sample
+
+# Terraform plans
+*.tfplan
+*tfplan*
+planout
+
+# Crash logs
+crash.log
+crash.*.log
+
+# Local overrides
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Terraform CLI config
+.terraformrc
+terraform.rc
+
+# Local provider caches / mirrors
+providers-cache/
+providers-mirror/
+plugin-cache/
+.terraform.d/plugin-cache/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# OS / IDE noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+*~

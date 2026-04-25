@@ -1,1 +1,0 @@
-proxmox_api_url = "https://10.18.164.185:8006/api2/json"
