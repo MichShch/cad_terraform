@@ -4,7 +4,7 @@ module "dcworker_pool" {
   source_template_vm_id     = 3000
   source_template_node_name = "pve1"
 
-  node_names = ["pve1", "pve2", "pve3", "pve4", "pve5", "pve6"]
+  node_names = ["pve1", "pve2", "pve3", "pve4", "pve5", "pve6", "pve7", "pve8", "pve9", "pve10", "pve11"]
 
   workers_per_node = {
     pve1 = 1
@@ -13,6 +13,11 @@ module "dcworker_pool" {
     pve4 = 3
     pve5 = 3
     pve6 = 3
+    pve7 = 3
+    pve8 = 3
+    pve9 = 3
+    pve10 = 3
+    pve11 = 3
   }
 
   node_template_vmid_start = 3001
