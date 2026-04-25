@@ -7,7 +7,7 @@ locals {
 
   node_offsets = {
     for index, node_name in var.node_names :
-    node_name => sum([
+    node_name => index == 0 ? 0 : sum([
       for previous_node_name in slice(var.node_names, 0, index) :
       lookup(var.workers_per_node, previous_node_name, 0)
     ])
@@ -64,6 +64,7 @@ resource "proxmox_virtual_environment_vm" "node_template" {
 
   memory {
     dedicated = var.memory_mb
+    floating = var.memory_floating_mb
   }
 
   network_device {
@@ -97,7 +98,6 @@ resource "proxmox_virtual_environment_vm" "worker" {
   clone {
     vm_id        = proxmox_virtual_environment_vm.node_template[each.value.node_name].vm_id
     node_name    = each.value.node_name
-    datastore_id = var.datastore_id
     full         = false
   }
 
@@ -115,6 +115,7 @@ resource "proxmox_virtual_environment_vm" "worker" {
 
   memory {
     dedicated = var.memory_mb
+    floating = var.memory_floating_mb
   }
 
   network_device {

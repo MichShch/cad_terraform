@@ -97,6 +97,12 @@ variable "memory_mb" {
   description = "Dedicated memory in MB."
 }
 
+variable "memory_floating_mb" {
+  type        = number
+  default     = 2048
+  description = "Floating memory in MB."
+}
+
 variable "user_account" {
   type = object({
     username = string
