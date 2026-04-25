@@ -34,9 +34,8 @@ override.tf.json
 .terraformrc
 terraform.rc
 
-# Local provider caches / mirrors
+# Local provider caches
 providers-cache/
-providers-mirror/
 plugin-cache/
 .terraform.d/plugin-cache/
 
