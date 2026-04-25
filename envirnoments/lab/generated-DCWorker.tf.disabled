@@ -1,0 +1,117 @@
+# __generated__ by Terraform
+# Please review these resources and move them into your main configuration files.
+
+# __generated__ by Terraform
+resource "proxmox_virtual_environment_vm" "vm131" {
+  acpi                                 = true
+  bios                                 = "seabios"
+  boot_order                           = ["scsi0", "ide2", "net0"]
+  delete_unreferenced_disks_on_destroy = true
+  description                          = null
+  hook_script_file_id                  = null
+  keyboard_layout                      = null
+  kvm_arguments                        = null
+  mac_addresses                        = ["00:00:00:00:00:00", "BC:24:11:C8:A8:3C"]
+  machine                              = null
+  migrate                              = false
+  name                                 = "DCWorker"
+  network_device = [{
+    bridge       = "virt2"
+    disconnected = false
+    enabled      = true
+    firewall     = true
+    mac_address  = "BC:24:11:C8:A8:3C"
+    model        = "virtio"
+    mtu          = 0
+    queues       = 0
+    rate_limit   = 0
+    trunks       = ""
+    vlan_id      = 0
+  }]
+  node_name           = "pve1"
+  on_boot             = true
+  pool_id             = null
+  protection          = false
+  purge_on_destroy    = true
+  reboot              = false
+  reboot_after_update = true
+  scsi_hardware       = "virtio-scsi-single"
+  started             = true
+  stop_on_destroy     = false
+  tablet_device       = true
+  tags                = ["distributed_computing", "quartus"]
+  template            = false
+  timeout_clone       = 1800
+  timeout_create      = 1800
+  timeout_migrate     = 1800
+  timeout_reboot      = 1800
+  timeout_shutdown_vm = 1800
+  timeout_start_vm    = 1800
+  timeout_stop_vm     = 300
+  vm_id               = 131
+  agent {
+    enabled = true
+    timeout = "15m"
+    trim    = true
+    type    = null
+  }
+  cpu {
+    affinity     = null
+    architecture = null
+    cores        = 4
+    flags        = []
+    hotplugged   = 0
+    limit        = 0
+    numa         = false
+    sockets      = 2
+    type         = "x86-64-v2-AES"
+    units        = 0
+  }
+  disk {
+    aio               = "io_uring"
+    backup            = true
+    cache             = "none"
+    datastore_id      = "local-zfs"
+    discard           = "ignore"
+    file_format       = "raw"
+    file_id           = null
+    import_from       = null
+    interface         = "scsi0"
+    iothread          = true
+    path_in_datastore = "vm-131-disk-0"
+    replicate         = true
+    serial            = null
+    size              = 24
+    ssd               = false
+  }
+  initialization {
+    datastore_id = "local-zfs"
+    interface    = "ide0"
+    upgrade      = true
+    ip_config {
+      ipv4 {
+        address = "10.10.1.113/24"
+        gateway = "10.10.1.1"
+      }
+      ipv6 {
+        address = "dhcp"
+        gateway = null
+      }
+    }
+    user_account {
+      keys     = ["ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCW0gTFlAvuBRJuyNeGT3QwWBopUa9L2Gusar1ffBQyD2OmwdrGSZxobijLlewxuRXgRMkHHpS7qIEw8mE0jSfe+0tb3b5t/wqQ2/pMVFGFU/WzZs7pPO4vm2YZnKpskkLzlYpEJK5kPzD1/S0g8uGIeZFeWKscBHZ3JUKrQ+T2mC2BadZHQhUZ6Y8r2UCaM0++2tgPAO/8KIBBDmjQ8bINdXSz3sOif052MQawk8vcyfg2IvPbyKBBbvf8g3yPLSAt36xObUFAbCc/ux8X+9G88GZsLs+H3xKhv6o7Gej/i4UFPZKN967N8dj4jh7diXtfvONaxI5P+n7MuMgtWr1pWkZABjVTSFbNRlYQkeFTy0hr2UDtFS2QcH0JeowGVClRX0mMfSDPiaIIgrH8WZvBNuS3bvL6VwlyPAg0EuVYGf6BYTcu+4es9LuIiDOTgp5qZsGXSfRdPG5rKyHh1K6o8NA8kxqEJ2yPhh/9SgoyZgQmNh+RHDc56kLHk081BW8= root@DCController", "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJVLRTgZAsMcjWDS00ugyXYo8lqDu7/tWIY+FpORf8eE nikikarp@mail.ru"]
+      password = null # sensitive
+      username = "dc_worker"
+    }
+  }
+  memory {
+    dedicated      = 20480
+    floating       = 0
+    hugepages      = null
+    keep_hugepages = false
+    shared         = 0
+  }
+  operating_system {
+    type = "l26"
+  }
+}
