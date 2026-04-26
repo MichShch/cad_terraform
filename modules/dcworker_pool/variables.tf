@@ -23,24 +23,9 @@ variable "node_template_vmid_start" {
   description = "First VM ID for per-node full clone templates."
 }
 
-variable "worker_vmid_start" {
-  type        = number
-  description = "First VM ID for linked worker clones."
-}
-
-variable "network_cidr" {
-  type        = string
-  description = "IPv4 network CIDR used for worker addresses, for example 10.10.1.0/24."
-}
-
-variable "ip_start_host" {
-  type        = number
-  description = "First host number inside network_cidr for worker IP allocation."
-}
-
-variable "gateway" {
-  type        = string
-  description = "IPv4 gateway for worker cloud-init configuration."
+variable "worker_vmid_start_by_node" {
+  type        = map(number)
+  description = "First linked worker clone VM ID for each target node."
 }
 
 variable "datastore_id" {

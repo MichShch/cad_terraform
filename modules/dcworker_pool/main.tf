@@ -1,6 +1,4 @@
 locals {
-  prefix_length = tonumber(split("/", var.network_cidr)[1])
-
   node_indexes = {
     for index, node_name in var.node_names : node_name => index
   }
@@ -25,10 +23,9 @@ locals {
     for node_name in var.node_names : {
       for worker_index in range(lookup(var.workers_per_node, node_name, 0)) :
       "${node_name}-${worker_index + 1}" => {
-        node_name    = node_name
-        name         = "${var.worker_name_prefix}-${node_name}-${format("%02d", worker_index + 1)}"
-        global_index = local.node_offsets[node_name] + worker_index
-        vm_id        = var.worker_vmid_start + local.node_offsets[node_name] + worker_index
+        node_name = node_name
+        name      = "${var.worker_name_prefix}-${node_name}-${format("%02d", worker_index + 1)}"
+        vm_id     = var.worker_vmid_start_by_node[node_name] + worker_index
       }
     }
   ]
@@ -96,9 +93,9 @@ resource "proxmox_virtual_environment_vm" "worker" {
   vm_id     = each.value.vm_id
 
   clone {
-    vm_id        = proxmox_virtual_environment_vm.node_template[each.value.node_name].vm_id
-    node_name    = each.value.node_name
-    full         = false
+    vm_id     = proxmox_virtual_environment_vm.node_template[each.value.node_name].vm_id
+    node_name = each.value.node_name
+    full      = false
   }
 
   agent {
@@ -135,8 +132,7 @@ resource "proxmox_virtual_environment_vm" "worker" {
 
     ip_config {
       ipv4 {
-        address = "${cidrhost(var.network_cidr, var.ip_start_host + each.value.global_index)}/${local.prefix_length}"
-        gateway = var.gateway
+        address = "dhcp"
       }
     }
 
