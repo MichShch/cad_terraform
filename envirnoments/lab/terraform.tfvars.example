@@ -1,0 +1,7 @@
+proxmox_api_url = "https://10.18.164.185:8006/api2/json"
+
+# Prefer environment variables for secrets in real use:
+#   TF_VAR_proxmox_api_token_id
+#   TF_VAR_proxmox_api_token_secret
+proxmox_api_token_id     = "terraform@pve!iac"
+proxmox_api_token_secret = "replace-with-token-secret"

@@ -11,6 +11,11 @@ variable "source_template_node_name" {
 variable "node_names" {
   type        = list(string)
   description = "Target Proxmox nodes."
+
+  validation {
+    condition     = length(var.node_names) > 0 && length(var.node_names) == length(distinct(var.node_names))
+    error_message = "node_names must contain at least one unique Proxmox node name."
+  }
 }
 
 variable "workers_per_node" {
@@ -44,6 +49,11 @@ variable "vlan_id" {
   type        = number
   default     = 0
   description = "VLAN ID for DCWorker network devices."
+
+  validation {
+    condition     = var.vlan_id >= 0 && var.vlan_id <= 4094
+    error_message = "vlan_id must be between 0 and 4094."
+  }
 }
 
 variable "template_name_prefix" {

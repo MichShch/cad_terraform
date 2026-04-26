@@ -3,14 +3,6 @@ locals {
     for index, node_name in var.node_names : node_name => index
   }
 
-  node_offsets = {
-    for index, node_name in var.node_names :
-    node_name => index == 0 ? 0 : sum([
-      for previous_node_name in slice(var.node_names, 0, index) :
-      lookup(var.workers_per_node, previous_node_name, 0)
-    ])
-  }
-
   node_templates = {
     for node_name, index in local.node_indexes :
     node_name => {
@@ -21,11 +13,11 @@ locals {
 
   worker_maps = [
     for node_name in var.node_names : {
-      for worker_index in range(lookup(var.workers_per_node, node_name, 0)) :
+      for worker_index in range(max(lookup(var.workers_per_node, node_name, 0), 0)) :
       "${node_name}-${worker_index + 1}" => {
         node_name = node_name
         name      = "${var.worker_name_prefix}-${node_name}-${format("%02d", worker_index + 1)}"
-        vm_id     = var.worker_vmid_start_by_node[node_name] + worker_index
+        vm_id     = lookup(var.worker_vmid_start_by_node, node_name, -1) + worker_index
       }
     }
   ]
@@ -39,6 +31,24 @@ resource "proxmox_virtual_environment_vm" "node_template" {
   name      = each.value.name
   node_name = each.key
   vm_id     = each.value.vm_id
+
+  lifecycle {
+    precondition {
+      condition = alltrue([
+        for node_name, worker_count in var.workers_per_node :
+        contains(var.node_names, node_name) && worker_count >= 0
+      ])
+      error_message = "workers_per_node keys must exist in node_names, and worker counts must be greater than or equal to 0."
+    }
+
+    precondition {
+      condition = alltrue([
+        for node_name in var.node_names :
+        contains(keys(var.worker_vmid_start_by_node), node_name)
+      ])
+      error_message = "worker_vmid_start_by_node must contain a starting VMID for every node in node_names."
+    }
+  }
 
   clone {
     vm_id        = var.source_template_vm_id
